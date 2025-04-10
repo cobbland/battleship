@@ -13,10 +13,16 @@ test('Place a ship', () => {
 test('Hit a ship', () => {
     const myGameboard = new Gameboard();
     myGameboard.placeShip([0, 0], [0, 2]);
-    myGameboard.receiveAttack([0, 0]);
+    expect(myGameboard.receiveAttack([0, 0])).toBe(true);
 });
 
-test('sink a ship', () => {
+test('Miss a ship', () => {
+    const myGameboard = new Gameboard();
+    myGameboard.placeShip([0, 0], [0, 2]);
+    expect(myGameboard.receiveAttack([0, 3])).toBe(false);
+});
+
+test('Sink a ship', () => {
     const myGameboard = new Gameboard();
     myGameboard.placeShip([0, 0], [0, 2]);
     myGameboard.receiveAttack([0, 0]);

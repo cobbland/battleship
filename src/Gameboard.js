@@ -7,23 +7,39 @@ export default class Gameboard {
     }
 
     placeShip(coordArrStart, coordArrEnd) {
-        const start = coordArrStart[0] - coordArrEnd[0];
-        const end = coordArrStart[1] - coordArrEnd[1];
-        const length = Math.abs(start) + Math.abs(end);
-        const allCoordArr = [];
-        // Add all coordinates to the above const.
+        // Calculate the length of the ship and create it
+        const length = Math.abs(coordArrStart[0] - coordArrEnd[0]) + 
+                       Math.abs(coordArrStart[1] - coordArrEnd[1]) +
+                       1;
         const newShip = new Ship(length);
-        // Loop through allCoordArr, adding a link to the above ship in this.ships.
-        // Like:
-        this.ships['0, 0'] = newShip;
+        // Add all coordinates from start to end inclusive to this.Ships
+        // linking each to the above newly created ship (newShip)
+        this.ships[coordArrStart] = newShip;
+        if (coordArrStart[0] < coordArrEnd[0]) {
+            for (let step = coordArrStart[0]; step < coordArrEnd[0]; step++) {
+                this.ships[[step, coordArrStart[1]]] = newShip;
+            }
+        } else if (coordArrStart[1] < coordArrEnd[1]) {
+            for (let step = coordArrStart[1]; step < coordArrEnd[1]; step++) {
+                this.ships[[coordArrStart[0], step]] = newShip;
+            }
+        }
+        this.ships[coordArrEnd] = newShip;
     }
 
     receiveAttack(coord) {
-        // todo
+        if (this.ships[coord] && this.ships[coord] !== 'miss') {
+            this.ships[coord].hit();
+            return true;
+        } else {
+            this.ships[coord] = 'miss';
+            return false;
+        }
     }
 
     allSunk() {
-        return true;
+        let sunk = true;
         // todo
+        return sunk;
     }
 }
