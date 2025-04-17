@@ -38,8 +38,13 @@ export default class Gameboard {
     }
 
     allSunk() {
-        let sunk = true;
-        // todo
-        return sunk;
+        const sunkArr = [];
+        for (const ship in this.ships) {
+            sunkArr.push(this.ships[ship].isSunk());
+        }
+        // check sunkArr to see if all are sunk
+        // if so, return true
+        // else, return false
+        return !sunkArr.some(bool => bool === false);
     }
 }
