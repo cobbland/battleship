@@ -1,6 +1,10 @@
 import Player from "./Player.js";
+import { makeBoard, colorShips } from "./battleDOM.js";
 
+const p1Board = document.querySelector(".p1-board");
+const p2Board = document.querySelector(".p2-board");
 const start = document.querySelector("#start");
+const display = document.querySelector("#info");
 
 const ships = [
     // Carrier (5 spaces) - vertical
@@ -28,51 +32,30 @@ const ships2 = [
     [[9, 5], [9, 6]]
 ];
 
-const playerOne = new Player("player");
-const playerTwo = new Player("computer");
-
 function placeShips(ships, player) {
     for (let i = 0; i < ships.length; i++) {
         player.gameboard.placeShip(ships[i][0], ships[i][1]);
     }
 }
 
-placeShips(ships, playerOne);
-placeShips(ships2, playerTwo);
 
-playerOne.gameboard.receiveAttack([0, 3]);
 
-console.log(playerOne);
 
-const p1Board = document.querySelector(".p1-board");
-const p2Board = document.querySelector(".p2-board");
 
-function makeBoard(div) {
-    for (let x = 0; x < 10; x++) {
-        for (let y = 0; y < 10 ; y++) {
-            const cell = document.createElement("div");
-            cell.classList.add("cell");
-            cell.id = `${[x, y]}`;
-            div.appendChild(cell);
-        }
-    }
-}
-
-function colorShips(board, player) {
-    const ships = player.gameboard.ships;
-    const cells = board.children;
-    for (let ship in ships) {
-        for (let i = 0; i < cells.length; i++) {
-            if (ship == cells[i].id) {
-                cells[i].classList.add('ship')
-            }
-        }
-    }
-}
-
-makeBoard(p1Board);
-makeBoard(p2Board);
+display.innerText = 'Click "Start" to begin'
 
 start.addEventListener("click", () => {
+    makeBoard(p1Board);
+    makeBoard(p2Board);
+    const playerOne = new Player("player");
+    const playerTwo = new Player("computer");
+    placeShips(ships, playerOne);
+    placeShips(ships2, playerTwo);
     colorShips(p1Board, playerOne);
+    p2Board.classList.add("active");
+    display.innerText = "Player's turn";
+});
+
+p1Board.addEventListener("click", (cell) => {
+
 });
