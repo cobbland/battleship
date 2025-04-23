@@ -1,9 +1,10 @@
-function makeBoard(div) {
+function makeBoard(div, player) {
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10 ; y++) {
             const cell = document.createElement("div");
             cell.classList.add("cell");
-            cell.id = `${[x, y]}`;
+            cell.dataset.cell = `${[x, y]}`;
+            cell.dataset.player = player.name;
             div.appendChild(cell);
         }
     }
@@ -14,11 +15,20 @@ function colorShips(board, player) {
     const cells = board.children;
     for (let ship in ships) {
         for (let i = 0; i < cells.length; i++) {
-            if (ship == cells[i].id) {
+            if (ship === cells[i].dataset.cell) {
                 cells[i].classList.add('ship')
             }
         }
     }
 }
 
-export { makeBoard, colorShips };
+function cellChoice(cell, bool, player) {
+    const cellTarget = document.querySelector(`[data-player="${player}"][data-cell="${cell}"]`);
+    if (bool) {
+        cellTarget.classList.add('hit');
+    } else {
+        cellTarget.classList.add('miss');
+    }
+}
+
+export { makeBoard, colorShips, cellChoice };

@@ -1,5 +1,6 @@
 import Player from "./Player.js";
-import { makeBoard, colorShips } from "./battleDOM.js";
+import { makeBoard, colorShips, cellChoice } from "./battleDOM.js";
+import { computer } from "./computer.js";
 
 const p1Board = document.querySelector(".p1-board");
 const p2Board = document.querySelector(".p2-board");
@@ -40,22 +41,44 @@ function placeShips(ships, player) {
 
 
 
+let gameOn = false;
+let playerOne;
+let playerTwo;
+let currentPlayer;
 
-
-display.innerText = 'Click "Start" to begin'
+display.innerText = 'click "start" to begin'
 
 start.addEventListener("click", () => {
-    makeBoard(p1Board);
-    makeBoard(p2Board);
-    const playerOne = new Player("player");
-    const playerTwo = new Player("computer");
-    placeShips(ships, playerOne);
-    placeShips(ships2, playerTwo);
-    colorShips(p1Board, playerOne);
-    p2Board.classList.add("active");
-    display.innerText = "Player's turn";
+    if (!gameOn) {
+        gameOn = true;
+        playerOne = new Player("player");
+        playerTwo = new Player("computer");
+        makeBoard(p1Board, playerOne);
+        makeBoard(p2Board, playerTwo);
+        placeShips(ships, playerOne);
+        placeShips(ships2, playerTwo);
+        colorShips(p1Board, playerOne);
+        p2Board.classList.add("active");
+        currentPlayer = playerOne;
+        display.innerText = `${currentPlayer.name}'s turn`;
+    }
 });
 
-p1Board.addEventListener("click", (cell) => {
-
+p2Board.addEventListener("click", (cell) => {
+    if (currentPlayer === playerOne) {
+        const hit = playerTwo.gameboard.receiveAttack(cell.target.dataset.cell)
+        const player = cell.target.dataset.player;
+        cellChoice(cell.target.dataset.cell, hit, player);
+        currentPlayer = playerTwo;
+        display.innerText = `${currentPlayer.name}'s turn`;
+    }
+    // computer's turn
+    const target = computer();
+    const player = playerOne.name;
+    const hit = playerOne.gameboard.receiveAttack(target);
+    setTimeout(() => {
+        cellChoice(target, hit, player);
+        currentPlayer = playerOne;
+        display.innerText = `${currentPlayer.name}'s turn`;
+    }, 1000)
 });
