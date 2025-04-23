@@ -128,11 +128,21 @@ body {
 }
 
 .hit {
-  border: red solid 1px;
+  background-color: red;
+}
+
+.cell.hit:hover {
+  background-color: red;
+  cursor: default;
 }
 
 .miss {
   background-color: aquamarine;
+}
+
+.cell.miss:hover {
+  background-color: aquamarine;
+  cursor: default;
 }
 
 #info {
