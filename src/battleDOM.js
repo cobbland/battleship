@@ -31,4 +31,21 @@ function cellChoice(cell, bool, player) {
     }
 }
 
-export { makeBoard, colorShips, cellChoice };
+function sunkShip(cell, player, board) {
+    const wholeShip = [];
+    for (let ship in player.gameboard.ships) {
+        if (player.gameboard.ships[cell] === player.gameboard.ships[ship]) {
+            wholeShip.push(ship)
+        }
+    }
+    const cells = board.children;
+    for (let coord of wholeShip) {
+        for (let i = 0; i < cells.length; i++) {
+            if (coord === cells[i].dataset.cell) {
+                cells[i].classList.add('sunk')
+            }
+        }
+    }
+}
+
+export { makeBoard, colorShips, cellChoice, sunkShip };

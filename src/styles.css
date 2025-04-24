@@ -111,6 +111,7 @@ body {
 .cell {
   border: black solid 1px;
   background-color: lightgray;
+  transition: background-color 0.5s ease;
 }
 
 .active .cell:hover {
@@ -142,6 +143,15 @@ body {
 
 .cell.miss:hover {
   background-color: aquamarine;
+  cursor: default;
+}
+
+.cell.sunk {
+  background-color: brown;
+}
+
+.cell.sunk:hover {
+  background-color: brown;
   cursor: default;
 }
 

@@ -1,5 +1,5 @@
 import Player from "./Player.js";
-import { makeBoard, colorShips, cellChoice } from "./battleDOM.js";
+import { makeBoard, colorShips, cellChoice, sunkShip } from "./battleDOM.js";
 import { computer } from "./computer.js";
 
 const p1Board = document.querySelector(".p1-board");
@@ -69,6 +69,17 @@ p2Board.addEventListener("click", (cell) => {
         const hit = playerTwo.gameboard.receiveAttack(cell.target.dataset.cell)
         const player = cell.target.dataset.player;
         cellChoice(cell.target.dataset.cell, hit, player);
+        if (hit) {
+            const sunk = playerTwo.gameboard.ships[cell.target.dataset.cell].isSunk();
+            if (sunk) {
+                sunkShip(cell.target.dataset.cell, playerTwo, p2Board)
+                display.innerText = "SUNK!";
+                // if (playerTwo.gameboard.allSunk()) {
+                //     display.innerText = `${currentPlayer.name} wins!!!`;
+                //     return;
+                // }
+            }
+        }
         currentPlayer = playerTwo;
         display.innerText = `${currentPlayer.name}'s turn`;
     }
@@ -78,7 +89,14 @@ p2Board.addEventListener("click", (cell) => {
     const hit = playerOne.gameboard.receiveAttack(target);
     setTimeout(() => {
         cellChoice(target, hit, player);
+        if (hit) {
+            const sunk = playerOne.gameboard.ships[target].isSunk();
+            if (sunk) {
+                sunkShip(cell.target.dataset.cell, playerOne, p1Board)
+                display.innerText = "SUNK!";
+            }
+        }
         currentPlayer = playerOne;
         display.innerText = `${currentPlayer.name}'s turn`;
-    }, 1000)
+    }, 100)
 });
