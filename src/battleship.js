@@ -45,6 +45,8 @@ let gameOn = false;
 let playerOne;
 let playerTwo;
 let currentPlayer;
+let p1Moves = [];
+let p2Moves = [];
 
 display.innerText = 'click "start" to begin'
 
@@ -65,38 +67,45 @@ start.addEventListener("click", () => {
 });
 
 p2Board.addEventListener("click", (cell) => {
-    if (currentPlayer === playerOne) {
-        const hit = playerTwo.gameboard.receiveAttack(cell.target.dataset.cell)
-        const player = cell.target.dataset.player;
-        cellChoice(cell.target.dataset.cell, hit, player);
-        if (hit) {
-            const sunk = playerTwo.gameboard.ships[cell.target.dataset.cell].isSunk();
-            if (sunk) {
-                sunkShip(cell.target.dataset.cell, playerTwo, p2Board)
-                display.innerText = "SUNK!";
-                // if (playerTwo.gameboard.allSunk()) {
-                //     display.innerText = `${currentPlayer.name} wins!!!`;
-                //     return;
-                // }
+    if (!p1Moves.includes(cell.target.dataset.cell)) {
+        if (currentPlayer === playerOne) {
+            const hit = playerTwo.gameboard.receiveAttack(cell.target.dataset.cell)
+            const player = cell.target.dataset.player;
+            cellChoice(cell.target.dataset.cell, hit, player);
+            if (hit) {
+                const sunk = playerTwo.gameboard.ships[cell.target.dataset.cell].isSunk();
+                if (sunk) {
+                    sunkShip(cell.target.dataset.cell, playerTwo, p2Board)
+                    display.innerText = "SUNK!";
+                    // if (playerTwo.gameboard.allSunk()) {
+                    //     display.innerText = `${currentPlayer.name} wins!!!`;
+                    //     return;
+                    // }
+                }
             }
+            p1Moves.push(cell.target.dataset.cell);
+            currentPlayer = playerTwo;
+            display.innerText = `${currentPlayer.name}'s turn`;
         }
-        currentPlayer = playerTwo;
-        display.innerText = `${currentPlayer.name}'s turn`;
+        // computer's turn
+        let target = computer();
+        while (p2Moves.includes(target)) {
+            target = computer();
+        }
+        const player = playerOne.name;
+        const hit = playerOne.gameboard.receiveAttack(target);
+        setTimeout(() => {
+            cellChoice(target, hit, player);
+            if (hit) {
+                const sunk = playerOne.gameboard.ships[target].isSunk();
+                if (sunk) {
+                    sunkShip(cell.target.dataset.cell, playerOne, p1Board)
+                    display.innerText = "SUNK!";
+                }
+            }
+            p2Moves.push(cell.target.dataset.cell);
+            currentPlayer = playerOne;
+            display.innerText = `${currentPlayer.name}'s turn`;
+        }, 100)
     }
-    // computer's turn
-    const target = computer();
-    const player = playerOne.name;
-    const hit = playerOne.gameboard.receiveAttack(target);
-    setTimeout(() => {
-        cellChoice(target, hit, player);
-        if (hit) {
-            const sunk = playerOne.gameboard.ships[target].isSunk();
-            if (sunk) {
-                sunkShip(cell.target.dataset.cell, playerOne, p1Board)
-                display.innerText = "SUNK!";
-            }
-        }
-        currentPlayer = playerOne;
-        display.innerText = `${currentPlayer.name}'s turn`;
-    }, 100)
 });
