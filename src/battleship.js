@@ -75,6 +75,7 @@ reset.addEventListener("click", () => {
 
 p2Board.addEventListener("click", (cell) => {
     if (!p1Moves.includes(cell.target.dataset.cell)) {
+        // player's turn
         if (currentPlayer === playerOne) {
             const hit = playerTwo.gameboard.receiveAttack(cell.target.dataset.cell)
             const player = cell.target.dataset.player;
@@ -84,10 +85,10 @@ p2Board.addEventListener("click", (cell) => {
                 if (sunk) {
                     sunkShip(cell.target.dataset.cell, playerTwo, p2Board)
                     display.innerText = "SUNK!";
-                    // if (playerTwo.gameboard.allSunk()) {
-                    //     display.innerText = `${currentPlayer.name} wins!!!`;
-                    //     return;
-                    // }
+                    if (playerTwo.gameboard.allSunk()) {
+                        display.innerText = `${currentPlayer.name} wins!!!`;
+                        return;
+                    }
                 }
             }
             p1Moves.push(cell.target.dataset.cell);

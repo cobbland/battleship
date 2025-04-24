@@ -32,7 +32,6 @@ export default class Gameboard {
             this.ships[coord].hit();
             return true;
         } else {
-            this.ships[coord] = 'miss';
             return false;
         }
     }
