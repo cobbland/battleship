@@ -8,6 +8,9 @@ const start = document.querySelector("#start");
 const reset = document.querySelector("#reset");
 const display = document.querySelector("#info");
 const chooseLayout = document.querySelector("#choose");
+const layoutButton1 = document.querySelector('#ships');
+const layoutButton2 = document.querySelector('#ships2');
+const layoutButton3 = document.querySelector('#ships3');
 
 const ships = [
     // Carrier (5 spaces) - vertical
@@ -100,7 +103,9 @@ chooseLayout.addEventListener("click", (button) => {
 start.addEventListener("click", () => {
     if (!gameOn) {
         gameOn = true;
-        chooseLayout.disabled = true;
+        layoutButton1.disabled = true;
+        layoutButton2.disabled = true;
+        layoutButton3.disabled = true;
         reset.disabled = false;
         const p2ShipLayout = computerShipLayout([ships, ships2, ships3]);
         placeShips(p2ShipLayout, playerTwo);
