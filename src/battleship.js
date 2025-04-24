@@ -5,6 +5,7 @@ import { computer } from "./computer.js";
 const p1Board = document.querySelector(".p1-board");
 const p2Board = document.querySelector(".p2-board");
 const start = document.querySelector("#start");
+const reset = document.querySelector("#reset");
 const display = document.querySelector("#info");
 
 const ships = [
@@ -63,6 +64,12 @@ start.addEventListener("click", () => {
         p2Board.classList.add("active");
         currentPlayer = playerOne;
         display.innerText = `${currentPlayer.name}'s turn`;
+    }
+});
+
+reset.addEventListener("click", () => {
+    if (gameOn) {
+        location.reload();
     }
 });
 
