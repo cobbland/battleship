@@ -4,4 +4,8 @@ function computer() {
     return `${x},${y}`;
 }
 
-export { computer };
+function computerShipLayout(optionsArr) {
+    return optionsArr[Math.floor(Math.random() * 3)];
+}
+
+export { computer, computerShipLayout };

@@ -1,6 +1,6 @@
 import Player from "./Player.js";
 import { makeBoard, colorShips, cellChoice, sunkShip } from "./battleDOM.js";
-import { computer } from "./computer.js";
+import { computer, computerShipLayout } from "./computer.js";
 
 const p1Board = document.querySelector(".p1-board");
 const p2Board = document.querySelector(".p2-board");
@@ -34,13 +34,24 @@ const ships2 = [
     [[9, 5], [9, 6]]
 ];
 
+const ships3 = [
+    // Carrier (5) - vertical
+    [[1, 9], [5, 9]],
+    // Battleship (4) - horizontal
+    [[7, 0], [7, 3]],
+    // Cruiser (3) - vertical
+    [[0, 2], [2, 2]],
+    // Submarine (3) - horizontal
+    [[3, 5], [3, 7]],
+    // Destroyer (2) - vertical
+    [[8, 6], [9, 6]]
+];
+
 function placeShips(ships, player) {
     for (let i = 0; i < ships.length; i++) {
         player.gameboard.placeShip(ships[i][0], ships[i][1]);
     }
 }
-
-
 
 let gameOn = false;
 let playerOne;
@@ -58,8 +69,10 @@ start.addEventListener("click", () => {
         playerTwo = new Player("computer");
         makeBoard(p1Board, playerOne);
         makeBoard(p2Board, playerTwo);
+        // const p1ShipLayout;
+        const p2ShipLayout = computerShipLayout([ships, ships2, ships3]);
         placeShips(ships, playerOne);
-        placeShips(ships2, playerTwo);
+        placeShips(p2ShipLayout, playerTwo);
         colorShips(p1Board, playerOne);
         p2Board.classList.add("active");
         currentPlayer = playerOne;
