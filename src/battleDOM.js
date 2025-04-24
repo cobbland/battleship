@@ -10,6 +10,15 @@ function makeBoard(div, player) {
     }
 }
 
+function clearShips(board) {
+    const cells = board.children;
+    for (let cell of cells) {
+        if (cell.classList.contains("ship")) {
+            cell.classList.toggle("ship");
+        }
+    }
+}
+
 function colorShips(board, player) {
     const ships = player.gameboard.ships;
     const cells = board.children;
@@ -48,4 +57,4 @@ function sunkShip(cell, player, board) {
     }
 }
 
-export { makeBoard, colorShips, cellChoice, sunkShip };
+export { makeBoard, clearShips, colorShips, cellChoice, sunkShip };

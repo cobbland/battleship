@@ -1,5 +1,5 @@
 import Player from "./Player.js";
-import { makeBoard, colorShips, cellChoice, sunkShip } from "./battleDOM.js";
+import { makeBoard, clearShips, colorShips, cellChoice, sunkShip } from "./battleDOM.js";
 import { computer, computerShipLayout } from "./computer.js";
 
 const p1Board = document.querySelector(".p1-board");
@@ -7,6 +7,7 @@ const p2Board = document.querySelector(".p2-board");
 const start = document.querySelector("#start");
 const reset = document.querySelector("#reset");
 const display = document.querySelector("#info");
+const chooseLayout = document.querySelector("#choose");
 
 const ships = [
     // Carrier (5 spaces) - vertical
@@ -59,21 +60,50 @@ let playerTwo;
 let currentPlayer;
 let p1Moves = [];
 let p2Moves = [];
+let p1ShipLayout;
 
-display.innerText = 'click "start" to begin'
+playerOne = new Player("player");
+playerTwo = new Player("computer");
+makeBoard(p1Board, playerOne);
+makeBoard(p2Board, playerTwo);
+
+display.innerText = 'choose layout';
+
+chooseLayout.addEventListener("click", (button) => {
+    if (button.target.id === "ships") {
+        p1ShipLayout = ships;
+        playerOne = new Player("player");
+        placeShips(p1ShipLayout, playerOne);
+        clearShips(p1Board);
+        colorShips(p1Board, playerOne);
+        start.disabled = false;
+        display.innerText = 'click "start" to begin'
+    } else if (button.target.id === "ships2") {
+        p1ShipLayout = ships2;
+        playerOne = new Player("player");
+        placeShips(p1ShipLayout, playerOne);
+        clearShips(p1Board);
+        colorShips(p1Board, playerOne);
+        start.disabled = false;
+        display.innerText = 'click "start" to begin'
+    } else if (button.target.id === "ships3") {
+        p1ShipLayout = ships3;
+        playerOne = new Player("player");
+        placeShips(p1ShipLayout, playerOne);
+        clearShips(p1Board);
+        colorShips(p1Board, playerOne);
+        start.disabled = false;
+        display.innerText = 'click "start" to begin'
+    }
+})
 
 start.addEventListener("click", () => {
     if (!gameOn) {
         gameOn = true;
-        playerOne = new Player("player");
-        playerTwo = new Player("computer");
-        makeBoard(p1Board, playerOne);
-        makeBoard(p2Board, playerTwo);
-        // const p1ShipLayout;
+        chooseLayout.disabled = true;
+        reset.disabled = false;
         const p2ShipLayout = computerShipLayout([ships, ships2, ships3]);
-        placeShips(ships, playerOne);
         placeShips(p2ShipLayout, playerTwo);
-        colorShips(p1Board, playerOne);
         p2Board.classList.add("active");
         currentPlayer = playerOne;
         display.innerText = `${currentPlayer.name}'s turn`;
@@ -128,6 +158,6 @@ p2Board.addEventListener("click", (cell) => {
             p2Moves.push(cell.target.dataset.cell);
             currentPlayer = playerOne;
             display.innerText = `${currentPlayer.name}'s turn`;
-        }, 100)
+        }, 1000)
     }
 });

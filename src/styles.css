@@ -155,6 +155,12 @@ body {
   cursor: default;
 }
 
+#choose {
+  display: flex;
+  gap: 0.5em;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 #info {
   grid-column: 1 / -1;
   background-color: lightgray;
